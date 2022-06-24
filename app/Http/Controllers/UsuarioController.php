@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UsuarioController extends Controller
 {
@@ -26,7 +27,7 @@ class UsuarioController extends Controller
             if (Hash::check($request->password, $usuario->password)) {
                 $usuario->firebase_token = $request->firebase_token;
                 $usuario->save();
-                return response()->json(['mensaje' => 'Usuario autenticado correctamente']);
+                return response()->json(['mensaje' => 'Usuario autenticado correctamente','token'=>JWTAuth::fromUser($usuario)]);
             } else {
                 return response()->json(['mensaje' => 'Contraseña incorrecta']);
             }

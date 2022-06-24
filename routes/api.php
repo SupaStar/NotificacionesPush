@@ -19,7 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/notificacion', [NotificacionesController::class, 'notificacion']);
-Route::post('/notificacionGlobal',[NotificacionesController::class, 'notificacionGlobal']);
+
 Route::post('/registro', [UsuarioController::class, 'registrar']);
 Route::post('/login', [UsuarioController::class, 'login']);
+Route::group(['middleware' => ['jwt']], function () {
+    Route::post('/notificacion', [NotificacionesController::class, 'notificacion']);
+    Route::post('/notificacionGlobal',[NotificacionesController::class, 'notificacionGlobal']);
+});
